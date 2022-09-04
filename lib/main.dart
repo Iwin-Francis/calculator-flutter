@@ -62,7 +62,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: GridView.builder(
                   itemCount: buttons.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4),
+                    crossAxisCount: 4,
+                    childAspectRatio: 5,
+                  ),
                   itemBuilder: (BuildContext context, int index) {
                     return MyButton(
                       buttonText: buttons[index],
