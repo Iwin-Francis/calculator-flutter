@@ -32,17 +32,17 @@ class _MyHomePageState extends State<MyHomePage> {
     'DEL',
     '%',
     '/',
-    '9',
-    '8',
     '7',
+    '8',
+    '9',
     '*',
-    '6',
-    '5',
     '4',
+    '5',
+    '6',
     '-',
-    '3',
-    '2',
     '1',
+    '2',
+    '3',
     '+',
     '0',
     '.',
@@ -89,7 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: buttons.length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
-                    childAspectRatio: 5,
                   ),
                   itemBuilder: (BuildContext context, int index) {
                     if (index == 0) {
@@ -125,6 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         buttonTapped: () {
                           setState(() {
                             equalPressed();
+                            userQuestion = userAnswer;
                           });
                         },
                         buttonText: buttons[index],
