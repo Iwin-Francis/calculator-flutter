@@ -1,5 +1,6 @@
 import 'package:calculator/buttons.dart';
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 void main() {
   runApp(const MyApp());
@@ -24,8 +25,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var userQuestion = 'question';
-  var userAnswer = 'answer';
+  var userQuestion = '';
+  var userAnswer = '';
   final List<String> buttons = [
     'C',
     'DEL',
@@ -73,7 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Container(
                       padding: EdgeInsets.all(20),
                       alignment: Alignment.centerRight,
-                      child: Text(userAnswer)),
+                      child: Text(
+                        userAnswer,
+                        style: TextStyle(fontSize: 20),
+                      )),
                 ],
               ),
             ),
@@ -91,9 +95,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (index == 0) {
                       return MyButton(
                         buttonTapped: () {
-                          setState(() {
-                            userQuestion = '';
-                          });
+                          if (userQuestion != '') {
+                            setState(() {
+                              userQuestion = '';
+                            });
+                          }
                         },
                         buttonText: buttons[index],
                         color: Colors.green,
@@ -102,14 +108,38 @@ class _MyHomePageState extends State<MyHomePage> {
                     } else if (index == 1) {
                       return MyButton(
                         buttonTapped: () {
-                          setState(() {
-                            userQuestion = userQuestion.substring(
-                                0, userQuestion.length - 1);
-                          });
+                          if (userQuestion != '') {
+                            setState(() {
+                              userQuestion = userQuestion.substring(
+                                  0, userQuestion.length - 1);
+                            });
+                          }
                         },
                         buttonText: buttons[index],
                         color: Colors.red,
                         textColor: Colors.white,
+                      );
+                    } else if (index == buttons.length - 1) {
+                      return MyButton(
+                        buttonTapped: () {
+                          setState(() {
+                            equalPressed();
+                          });
+                        },
+                        buttonText: buttons[index],
+                        color: Colors.lightBlue,
+                        textColor: Colors.white,
+                      );
+                    } else if (index == buttons.length - 2) {
+                      return MyButton(
+                        buttonTapped: () {
+                          setState(() {
+                            userQuestion = userAnswer;
+                          });
+                        },
+                        buttonText: buttons[index],
+                        color: Colors.lightBlue[50],
+                        textColor: Colors.lightBlue,
                       );
                     } else {
                       return MyButton(
@@ -136,9 +166,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   bool isOperator(String x) {
-    if (x == '%' || x == '/' || x == 'x' || x == '-' || x == '+' || x == '=') {
+    if (x == '%' || x == '/' || x == '*' || x == '-' || x == '+' || x == '=') {
       return true;
     }
     return false;
+  }
+
+  void equalPressed() {
+    String finalQuestion = userQuestion;
+    Parser p = Parser();
+    Expression exp = p.parse(finalQuestion);
+    ContextModel cm = ContextModel();
+    double eval = exp.evaluate(EvaluationType.REAL, cm);
+    userAnswer = eval.toString();
   }
 }
