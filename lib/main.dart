@@ -98,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           if (userQuestion != '') {
                             setState(() {
                               userQuestion = '';
+                              userAnswer = '';
                             });
                           }
                         },
