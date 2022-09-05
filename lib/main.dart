@@ -24,6 +24,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var userQuestion = 'question';
+  var userAnswer = 'answer';
   final List<String> buttons = [
     'C',
     'DEL',
@@ -54,7 +56,27 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: Container(),
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                      padding: EdgeInsets.all(20),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        userQuestion,
+                        style: TextStyle(fontSize: 20),
+                      )),
+                  Container(
+                      padding: EdgeInsets.all(20),
+                      alignment: Alignment.centerRight,
+                      child: Text(userAnswer)),
+                ],
+              ),
+            ),
           ),
           Expanded(
             flex: 2,
@@ -66,15 +88,45 @@ class _MyHomePageState extends State<MyHomePage> {
                     childAspectRatio: 5,
                   ),
                   itemBuilder: (BuildContext context, int index) {
-                    return MyButton(
-                      buttonText: buttons[index],
-                      color: isOperator(buttons[index])
-                          ? Colors.lightBlue
-                          : Colors.lightBlue[50],
-                      textColor: isOperator(buttons[index])
-                          ? Colors.white
-                          : Colors.lightBlue,
-                    );
+                    if (index == 0) {
+                      return MyButton(
+                        buttonTapped: () {
+                          setState(() {
+                            userQuestion = '';
+                          });
+                        },
+                        buttonText: buttons[index],
+                        color: Colors.green,
+                        textColor: Colors.white,
+                      );
+                    } else if (index == 1) {
+                      return MyButton(
+                        buttonTapped: () {
+                          setState(() {
+                            userQuestion = userQuestion.substring(
+                                0, userQuestion.length - 1);
+                          });
+                        },
+                        buttonText: buttons[index],
+                        color: Colors.red,
+                        textColor: Colors.white,
+                      );
+                    } else {
+                      return MyButton(
+                        buttonTapped: () {
+                          setState(() {
+                            userQuestion += buttons[index];
+                          });
+                        },
+                        buttonText: buttons[index],
+                        color: isOperator(buttons[index])
+                            ? Colors.lightBlue
+                            : Colors.lightBlue[50],
+                        textColor: isOperator(buttons[index])
+                            ? Colors.white
+                            : Colors.lightBlue,
+                      );
+                    }
                   }),
             ),
           ),
